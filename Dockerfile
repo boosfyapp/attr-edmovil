@@ -9,4 +9,5 @@ COPY assets/ /usr/share/nginx/html/assets/
 COPY favicon.png /usr/share/nginx/html/favicon.png
 COPY logo-light-bg-compact.png /usr/share/nginx/html/logo-light-bg-compact.png
 COPY logo-dark-bg-compact.png /usr/share/nginx/html/logo-dark-bg-compact.png
+RUN chmod -R a+rX /usr/share/nginx/html
 EXPOSE 80

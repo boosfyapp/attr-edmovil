@@ -4,7 +4,7 @@ set -Eeuo pipefail
 # Installed as /usr/local/sbin/att-redmovil-deploy and invoked only by the
 # forced-command SSH key. Never execute deployment instructions from the repo.
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin
-umask 077
+umask 022
 
 if [[ ! "${SSH_ORIGINAL_COMMAND:-}" =~ ^deploy\ ([0-9a-f]{40})$ ]]; then
   echo 'Expected: deploy <40-character commit SHA>' >&2
@@ -32,6 +32,7 @@ if [[ "$revision" != "$head_revision" ]]; then
   exit 0
 fi
 git -C "$source_dir" checkout --quiet --force --detach "$revision"
+chmod -R a+rX "$source_dir"
 
 docker build --pull --label "org.opencontainers.image.revision=$revision" -t "$image" "$source_dir"
 
