@@ -1,0 +1,167 @@
+[
+  {
+    "key": "google-pixel-10",
+    "source": "https://www.att.com.mx/",
+    "url": "https://d14v9oh63c3onh.cloudfront.net/pixel_10_obsidian_8fca84cba8.png?v=pixel_10_obsidian_8fca84cba8"
+  },
+  {
+    "key": "honor-600",
+    "source": "https://www.honor.com/mx/phones/honor-600/",
+    "url": "https://www.honor.com/content/dam/honor/common/products/honor-600/product/share.jpg"
+  },
+  {
+    "key": "honor-magic8-lite",
+    "source": "https://www.honor.com/mx/phones/honor-magic8-lite/",
+    "url": "https://www.honor.com/content/dam/honor/common/products/smartphone/honor-magic8-lite/red/share-img.jpg"
+  },
+  {
+    "key": "honor-x5d",
+    "source": "https://www.honor.com/mx/phones/honor-x5d/",
+    "url": "https://www.honor.com/content/dam/honor/common/products/smartphone/honor-x5d/assets/share-x5d.jpg"
+  },
+  {
+    "key": "honor-x7d",
+    "source": "https://www.honor.com/mx/phones/honor-x7d/",
+    "url": "https://www.honor.com/content/dam/honor/common/products/smartphone/honor-x7d/assets/share-x7d.jpg"
+  },
+  {
+    "key": "honor-x8d",
+    "source": "https://www.honor.com/mx/phones/honor-x8d/",
+    "url": "https://www.honor.com/content/dam/honor/common/product-list/product-series/honor-x8d/honor-x8d-blue-liat.png"
+  },
+  {
+    "key": "motorola-edge70-fusion",
+    "source": "https://www.motorola.com/gt/es/p/phones/motorola-edge/edge-70-fusion/motorolaedge70fusion",
+    "url": "https://p4-ofp.static.pub//fes/cms/2026/04/10/at277st5t0vtvg7gr12x7uko32kins283349.png"
+  },
+  {
+    "key": "motorola-edge70",
+    "source": "https://www.motorola.com/we/en/p/phones/motorola-edge/motorola-edge-70/pmipmjc43m9",
+    "url": "https://p3-ofp.static.pub//fes/cms/2025/10/29/zin4lmaib1gpjlnaiyus5vuzt6dtpe513171.png"
+  },
+  {
+    "key": "motorola-g15",
+    "source": "https://www.motorola.com/gb/en/p/phones/moto-g/15/pmipmhj40m2",
+    "url": "https://p4-ofp.static.pub//fes/cms/2025/10/08/fpr2knntrx92i4tcjmlednyqgsj9uw887553.png"
+  },
+  {
+    "key": "motorola-g17",
+    "source": "https://www.motorola.com/gb/en/p/phones/moto-g/17/pmipmjn44mj",
+    "url": "https://p2-ofp.static.pub//fes/cms/2026/10/01/le2pt2ftty3rohcr4iz6hfeo7s28b8517149.png"
+  },
+  {
+    "key": "motorola-g77",
+    "source": "https://www.motorola.com/gb/en/p/phones/moto-g/77/pmipmjh43mw",
+    "url": "https://p2-ofp.static.pub//fes/cms/2026/01/27/fb2vak7egl1hkwmslmcajbbp9vfms6544459.png"
+  },
+  {
+    "key": "motorola-edge70-pro",
+    "source": "https://www.motorola.com/we/en/p/phones/motorola-edge/motorola-edge-70-pro/pmipmjp44mp",
+    "url": "https://p2-ofp.static.pub//fes/cms/2026/04/28/j1zd6yx1pjc4qnjzp2hyjit2jf6wmt338741.png"
+  },
+  {
+    "key": "oppo-a6",
+    "source": "https://www.oppo.com/mx/smartphones/series-a/a6/",
+    "url": "https://www.oppo.com/content/dam/oppo/common/mkt/v2-2/a6-series/b4/list-page/a6/480-600-pink.png"
+  },
+  {
+    "key": "oppo-a6t",
+    "source": "https://www.oppo.com/mx/smartphones/series-a/a6t/",
+    "url": "https://www.oppo.com/content/dam/oppo_com/common/mkt/v2-2/a6t-la/list-page/480-600-white.png"
+  },
+  {
+    "key": "oppo-a6k",
+    "source": "https://www.movertix.com/en/oppo-a6k-4g-dual-sim-crystal-blue-256gb-and-4gb-ram.html",
+    "url": "https://cdn.movertix.com/media/catalog/product/o/p/oppo-a6k-4g-dual-sim-crystal-blue-256gb-and-4gb-ram.jpg"
+  },
+  {
+    "key": "oppo-a80",
+    "source": "https://www.techry.com.au/products/oppo-a80-5g-moonlight-purple-get-oppo-supervooc%E2%84%A2%EF%B8%8F-45w-power-adapter-as-gwp-copy",
+    "url": "https://www.techry.com.au/cdn/shop/files/1.OPPO_A80_Product_Image_Moonlight_Purple_Front_Back_RGB_1800x.png?v=1724043923"
+  },
+  {
+    "key": "oppo-reno16-f",
+    "source": "https://www.oppo.com/mx/smartphones/series-reno/reno16-f/",
+    "url": "https://www.oppo.com/content/dam/oppo_com/common/mkt/v2-2/oppo-reno16-series-en/list-page/reno16-f/480-600-white.png"
+  },
+  {
+    "key": "oppo-reno16",
+    "source": "https://www.oppo.com/mx/smartphones/series-reno/reno16/",
+    "url": "https://www.oppo.com/content/dam/oppo_com/common/mkt/v2-2/oppo-reno16-series-en/list-page/reno16/480-600-white.png"
+  },
+  {
+    "key": "samsung-a27",
+    "source": "https://www.att.com.mx/",
+    "url": "https://d14v9oh63c3onh.cloudfront.net/a27_a95dee23e0.png?v=a27_a95dee23e0"
+  },
+  {
+    "key": "samsung-a37",
+    "source": "https://www.samsung.com/mx/smartphones/galaxy-a/galaxy-a37-5g-awesome-graygreen-128gb-sm-a376bdgcltm/",
+    "url": "https://images.samsung.com/is/image/samsung/p6pim/mx/sm-a376bdgcltm/gallery/mx-galaxy-a37-5g-sm-a376-585548-sm-a376bdgcltm-thumb-554323864"
+  },
+  {
+    "key": "samsung-a57",
+    "source": "https://www.thegoodguys.com.au/samsung-galaxy-a57-5g-256gb-navy-11901362226",
+    "url": "https://cdn.shopify.com/s/files/1/0641/9388/8321/files/50098547_1054131.png?v=1775199880"
+  },
+  {
+    "key": "samsung-z-flip8",
+    "source": "https://www.samsung.com/mx/smartphones/galaxy-z-flip8/",
+    "url": "https://images.samsung.com/mx/smartphones/galaxy-z-flip8/images/galaxy-z-flip8-share-image.jpg"
+  },
+  {
+    "key": "samsung-z-fold8-ultra",
+    "source": "https://www.samsung.com/us/smartphones/galaxy-z-fold8-ultra/buy/galaxy-z-fold8-ultra-512gb-unlocked-sku-sm-f976uzkexaa/",
+    "url": "https://images.samsung.com/is/image/samsung/p6pim/us/f2607/gallery/us-galaxy-z-fold8-ultra-f976-600251-sm-f976uzkexaa-553838841?$PD_GALLERY_PNG$"
+  },
+  {
+    "key": "xiaomi-15t",
+    "source": "https://www.mi.com/mx/product/xiaomi-15t/",
+    "url": "https://i02.appmifile.com/21_item_mx/05/09/2025/00d6dfdb12acf3c633ed67c55c71c1f9.png"
+  },
+  {
+    "key": "xiaomi-17t",
+    "source": "https://www.mi.com/mx/product/xiaomi-17t/",
+    "url": "https://i02.appmifile.com/864_operatorx_operatorx_xm/26/05/2026/943c1b18cd7ce542f90b693c25ed54a2.png"
+  },
+  {
+    "key": "xiaomi-redmi-17",
+    "source": "https://www.mi.com/mx/product/redmi-17/",
+    "url": "https://i02.appmifile.com/89_operatorx_operatorx_xm/04/08/2026/134d150db005a98ca682a72f8a698f47.png"
+  },
+  {
+    "key": "xiaomi-redmi-a7-pro",
+    "source": "https://www.att.com.mx/",
+    "url": "https://d14v9oh63c3onh.cloudfront.net/Redmi_A7pro_71829e18b0.png?v=Redmi_A7pro_71829e18b0"
+  },
+  {
+    "key": "xiaomi-redmi-note17",
+    "source": "https://www.mi.com/es/product/redmi-note-17/",
+    "url": "https://i02.appmifile.com/855_operatorx_operatorx_xm/21/08/2026/9a19ea4018b8b60b2e5c0b3dd8a28d0e.png"
+  },
+  {
+    "key": "apple-iphone15",
+    "source": "https://www.mozillion.com/es/phone/apple/iphone-15/apple-iphone-15-black-128gb-brand-new",
+    "url": "https://www.mozillion.com/storage/product_model_images/1767881844_iphone-15-black-front.png"
+  },
+  {
+    "key": "apple-iphone16",
+    "source": "https://www.vivacom.bg/devices/apple-iphone-16-128gb/000000000050013249_47316",
+    "url": "https://www.vivacom.bg/upload/img_50013249_apple_iphone_16_128gb_ultramarine_large_142081_20250711_120250.png"
+  },
+  {
+    "key": "apple-iphone17",
+    "source": "https://www.thegoodguys.com.au/apple-iphone-17-256gb-lavender-mg6m4xa",
+    "url": "https://cdn.shopify.com/s/files/1/0641/9388/8321/files/50096509_1015511.png?v=1776231458"
+  },
+  {
+    "key": "apple-iphone17-pro",
+    "source": "https://www.tre.se/handla/mobiltelefoner/apple/iphone-17-pro",
+    "url": "https://assets.tre.se/images/se-webshop-device/apple/iphone-17-pro/iphone-17-pro-frontback-semtag-orange.png"
+  },
+  {
+    "key": "apple-iphone17-pro-max",
+    "source": "https://www.o2.co.uk/shop/apple/iphone-17-pro-max",
+    "url": "https://storyblok.cdn.vmo2digital.co.uk/f/253875/584x584/5bc03b8f37/360-sku-header-iphone-17-pro-max-cosmic-orange-100925.png"
+  }
+]
