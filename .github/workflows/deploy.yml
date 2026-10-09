@@ -1,0 +1,41 @@
+name: Deploy AT&T landing
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: att-redmovil-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.repository == 'boosfyapp/attr-edmovil'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Configure restricted deployment key
+        env:
+          DEPLOY_KEY: ${{ secrets.ATT_REDMOVIL_DEPLOY_KEY }}
+          KNOWN_HOSTS: ${{ secrets.ATT_REDMOVIL_KNOWN_HOSTS }}
+        run: |
+          test -n "$DEPLOY_KEY"
+          test -n "$KNOWN_HOSTS"
+          install -d -m 700 "$HOME/.ssh"
+          printf '%s\n' "$DEPLOY_KEY" > "$HOME/.ssh/att_redmovil_deploy"
+          printf '%s\n' "$KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/att_redmovil_deploy" "$HOME/.ssh/known_hosts"
+
+      - name: Deploy pushed revision
+        run: |
+          ssh \
+            -o BatchMode=yes \
+            -o ConnectTimeout=15 \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            -i "$HOME/.ssh/att_redmovil_deploy" \
+            root@62.84.190.84 "deploy ${GITHUB_SHA}"
