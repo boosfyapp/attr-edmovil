@@ -49,7 +49,7 @@ POST /api/versions/:id/restore                     → 200 {revision}
 POST /api/uploads      (cuerpo binario image/*)    → 200 {path:"uploads/<sha>.webp"} | 400 | 413
 POST /api/password     {current, next}             → 200 | 401 | 400
 GET  /api/draft/content.js · /api/draft/theme.css  → vista previa
-GET  /admin/preview                                → landing con el borrador
+GET  /preview/                                → landing con el borrador
 GET  /healthz                                      → 200 "ok"
 Escrituras exigen header X-Requested-With: att-admin
 ```
@@ -128,7 +128,7 @@ Escrituras exigen header X-Requested-With: att-admin
 
 **Files:** Modify `server/app.js`; Create `server/lib/uploads.js`, `test/api.test.js`, `test/uploads.test.js`.
 
-- [ ] **7.1 Pruebas que fallan** (servidor real en puerto efímero con `dataDir` temporal): login correcto/incorrecto/limitado/503; rutas protegidas → 401 sin cookie; POST sin `X-Requested-With` → 403; flujo `GET /api/draft` → `PUT` → `POST /api/publish` → `GET /published/content.js` con el cambio; 409 por revisión vieja; 422 con errores; `restore`; `/api/draft/content.js` solo con sesión; `/admin/preview` contiene `/api/draft/content.js` y la barra; `/` publicado usa `?v=<versión>`; subida: acepta WebP/PNG/JPEG por magic bytes, rechaza texto/SVG/HTML renombrado, >5 MB → 413, mismo contenido → mismo nombre; `/uploads/<archivo>` sirve con `immutable`; `POST /api/password` cambia y exige actual.
+- [ ] **7.1 Pruebas que fallan** (servidor real en puerto efímero con `dataDir` temporal): login correcto/incorrecto/limitado/503; rutas protegidas → 401 sin cookie; POST sin `X-Requested-With` → 403; flujo `GET /api/draft` → `PUT` → `POST /api/publish` → `GET /published/content.js` con el cambio; 409 por revisión vieja; 422 con errores; `restore`; `/api/draft/content.js` solo con sesión; `/preview/` contiene `/api/draft/content.js` y la barra; `/` publicado usa `?v=<versión>`; subida: acepta WebP/PNG/JPEG por magic bytes, rechaza texto/SVG/HTML renombrado, >5 MB → 413, mismo contenido → mismo nombre; `/uploads/<archivo>` sirve con `immutable`; `POST /api/password` cambia y exige actual.
 - [ ] **7.2 Implementar** enrutado completo y `uploads.js`. Cookie `att_session` `HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=43200` (sin `Secure` solo si `config.insecureCookies`, para pruebas locales). IP de cliente desde `CF-Connecting-IP`/`X-Forwarded-For`.
 - [ ] **7.3** PASS. **Commit** `feat(server): admin API, uploads and preview routes`.
 
@@ -154,7 +154,7 @@ Escrituras exigen header X-Requested-With: att-admin
 **Files:** Create `admin/views/plans.js`, `devices.js`, `coupons.js`, `people-stores.js`, `faq-zones.js`, `appearance.js`, `settings.js`, `history.js`, `preview.js`, `admin/lib/image-upload.js` (reduce a 1600 px y convierte a WebP con canvas, sube y devuelve la ruta), `admin/lib/contrast.js`.
 
 - [ ] **10.1** Editor genérico de listas (`listEditor({schema,items,onChange})`: añadir, duplicar, eliminar con confirmación, reordenar ↑↓, campos tipados `text|number|money|url|image|toggle|date|textarea`) usado por Planes (tres pestañas), Equipos (con filtro por marca y "ocultar"), Cupones, Equipo, Tiendas, FAQ, Zonas, Rangos del cotizador.
-- [ ] **10.2** Apariencia (5 selectores de color, vista previa de botones, contraste con aviso, "Restaurar colores de marca"), Ajustes (WhatsApp, GA4, Pixel, cambiar contraseña), Historial (Ver/Restaurar), Vista previa (`iframe` a `/admin/preview` con alternancia móvil/escritorio).
+- [ ] **10.2** Apariencia (5 selectores de color, vista previa de botones, contraste con aviso, "Restaurar colores de marca"), Ajustes (WhatsApp, GA4, Pixel, cambiar contraseña), Historial (Ver/Restaurar), Vista previa (`iframe` a `/preview/` con alternancia móvil/escritorio).
 - [ ] **10.3** Publicar: valida en servidor, muestra errores enlazados a la pantalla y campo; pide nota opcional; confirma y muestra "Publicado — versión N".
 - [ ] **10.4 Verificar en navegador** de punta a punta (cambiar un precio, subir una foto, crear un cupón con vigencia, cambiar un color, publicar, ver la landing, restaurar). **Commit** `feat(admin): plans, devices, coupons, people, FAQ, appearance, settings, history, preview`.
 

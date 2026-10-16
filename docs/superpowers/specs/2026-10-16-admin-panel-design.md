@@ -81,7 +81,7 @@ Marcado mínimo en los textos: `**negrita**`. Nunca HTML: el loader construye no
 Pantallas: Inicio · Textos · Planes · Equipos · Cupones · Equipo y tiendas · Apariencia · Ajustes · Historial. Español, responsive.
 
 - Edición siempre sobre el borrador; guardado automático con `revision` (control de concurrencia optimista: si otra pestaña guardó antes, se avisa y no se pisa).
-- **Vista previa**: `/admin/preview` sirve la landing real con `draft` (`/api/draft/content.js`, `/api/draft/theme.css`) bajo sesión, con barra "VISTA PREVIA — no publicado" y alternancia móvil/escritorio (iframe).
+- **Vista previa**: `/preview/` sirve la landing real con `draft` (`/api/draft/content.js`, `/api/draft/theme.css`) bajo sesión, con barra "VISTA PREVIA — no publicado" y alternancia móvil/escritorio (iframe).
 - **Publicar**: valida el borrador; si pasa, escribe `content.js` y `theme.css` de forma atómica (tmp + rename), guarda `versions/<n>.json` y actualiza `meta.json`. **Restaurar** una versión la carga como borrador (no publica).
 - Validaciones que bloquean publicar: precios/mensualidades vacíos, ≤ 0 o no numéricos; WhatsApp ≠ `52` + 10 dígitos; colores que no sean `#rrggbb`; imágenes inexistentes; cupón activo sin título/monto, o con `from` > `to`; texto vacío; longitudes máximas. Apariencia muestra contraste y advierte (no bloquea) por debajo de 4.5:1.
 - Imágenes: el navegador las reduce (máx. 1600 px) y las convierte a WebP con canvas antes de subirlas; el servidor valida magic bytes (WebP/JPEG/PNG), límite 5 MB y las guarda con nombre = hash SHA-256 (inmutables, `Cache-Control: immutable`).
@@ -106,6 +106,13 @@ Pantallas: Inicio · Textos · Planes · Equipos · Cupones · Equipo y tiendas 
 - `node:test` sin dependencias: validación, semilla, extracción de `data-cms`, ciclo borrador → publicar → restaurar, concurrencia (`revision`), auth (login, límite, sesión, CSRF), subida de imágenes (tipo, tamaño, hash), render de `content.js`/`theme.css`, servidor de archivos (traversal bloqueado).
 - Navegador: la landing sin publicar se ve igual que producción; con un cambio publicado (texto, precio, color, cupón) se refleja; vista previa muestra el borrador y la landing real no cambia hasta publicar.
 - Producción: HTTP 200 de `/`, `/admin/`, `/healthz`; ciclo completo publicar → restaurar sobre el servicio real.
+
+## Notas de implementación (post-entrega)
+
+- La vista previa vive en `/preview/` (no en `/admin/preview`): así las URLs relativas y las anclas de la landing funcionan igual que en producción. Usa `draft-content.js` / `draft-theme.css` y desactiva GA4 (`window.__ATT_PREVIEW`).
+- Sin nada publicado, «cambios sin publicar» significa «distinto del contenido original del repo».
+- Cloudflare cachea `.js`/`.css` aunque el origen diga `no-cache`: el panel se sirve `no-store` y el contenido publicado va versionado (`?v=<versión>`); la landing tolera HTML antiguo en caché del navegador.
+- Contraseña inicial: variable `ADMIN_PASSWORD` del servicio; se cambia desde Ajustes.
 
 ## Riesgos
 
