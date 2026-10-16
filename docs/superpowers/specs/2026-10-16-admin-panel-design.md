@@ -52,7 +52,7 @@ El contenido vive en el volumen, **no** en el repo: un redeploy desde GitHub no 
               simple:[{name,price,gbBase,gbDouble,terms:[{months,pay,free,total}]}] },
   budgetRanges: [{id,label,tag,min,max}],
   devices:  [{brand,model,plan,monthly,term,image,hidden}],
-  team:     [{role,name,image,principal,phone}],
+  team:     [{role,name,image,principal}],
   stores:   [{name,address,hours,map,principal}],
   coupons:  [{id,title,description,amount,product,image,active,from,to}],
   faqs:     [{q,a}],
