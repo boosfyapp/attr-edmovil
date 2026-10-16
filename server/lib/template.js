@@ -82,12 +82,15 @@ export function renderIndex(html, version) {
   return html.replace(CONTENT_REF, `published/content.js?v=${v}`).replace(THEME_REF, `published/theme.css?v=${v}`);
 }
 
-const PREVIEW_BAR = `<div id="att-preview-bar" style="position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#14181c;color:#fff;font:700 13px/1.2 system-ui,sans-serif;padding:9px 14px;text-align:center;letter-spacing:.02em;border-top:3px solid #ff8226">VISTA PREVIA — contenido sin publicar</div>`;
+const CONTENT_TAG = /<script src="published\/content\.js\?v=[^"']*"><\/script>/;
+const PREVIEW_SCRIPTS = '<script>window.__ATT_PREVIEW = true;</script>\n<script src="draft-content.js"></script>';
+
+const PREVIEW_BAR =`<div id="att-preview-bar" style="position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#14181c;color:#fff;font:700 13px/1.2 system-ui,sans-serif;padding:9px 14px;text-align:center;letter-spacing:.02em;border-top:3px solid #ff8226">VISTA PREVIA — contenido sin publicar</div>`;
 
 /** HTML de la vista previa (/preview/): usa el contenido del borrador y marca la página. */
 export function renderPreview(html) {
   return html
-    .replace(CONTENT_REF, "draft-content.js")
+    .replace(CONTENT_TAG, PREVIEW_SCRIPTS)
     .replace(THEME_REF, "draft-theme.css")
     .replace("</body>", `${PREVIEW_BAR}</body>`);
 }

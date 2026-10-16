@@ -69,6 +69,9 @@ export function createStore({ dataDir, siteDir }) {
   const dirs = { siteDir, dataDir };
 
   const readMeta = () => readJson(f.meta);
+  let seedHashCache = null;
+  /** Sin nada publicado, "con cambios" significa distinto del contenido original de la landing. */
+  const seedHash = () => (seedHashCache ??= contentHash(buildSeed(siteDir)));
 
   function loadDraft() {
     let draft = readJson(f.draft);
@@ -87,7 +90,7 @@ export function createStore({ dataDir, siteDir }) {
       content: draft.content,
       publishedVersion: meta?.version ?? null,
       publishedAt: meta?.publishedAt ?? null,
-      dirty: !meta || meta.hash !== contentHash(draft.content),
+      dirty: meta ? meta.hash !== contentHash(draft.content) : contentHash(draft.content) !== seedHash(),
     };
   }
 

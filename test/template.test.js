@@ -68,5 +68,6 @@ describe("renderIndex / renderPreview", () => {
     assert.match(out, /draft-theme\.css/);
     assert.match(out, /draft-content\.js/);
     assert.match(out, /VISTA PREVIA/);
+    assert.match(out, /__ATT_PREVIEW = true/);
   });
 });

@@ -13,13 +13,15 @@ const newStore = () => {
 };
 
 describe("store: borrador", () => {
-  it("crea el borrador desde la semilla (revisión 1, sin publicar, con cambios)", () => {
+  it("crea el borrador desde la semilla (revisión 1, sin publicar, sin cambios)", () => {
     const { store } = newStore();
     const d = store.getDraft();
     assert.equal(d.revision, 1);
     assert.equal(d.publishedVersion, null);
-    assert.equal(d.dirty, true);
+    assert.equal(d.dirty, false, "sin publicar y sin editar: nada que publicar");
     assert.equal(d.content.plans.premium.length, 8);
+    d.content.plans.premium[0].price = 1;
+    assert.equal(store.saveDraft(d.content, 1).dirty, true, "editado respecto al original");
   });
 
   it("guarda con revisión y rechaza una revisión vieja", () => {
