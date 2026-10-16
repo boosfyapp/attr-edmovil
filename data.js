@@ -192,3 +192,42 @@ const FAQS = [
     a: "Escríbenos por WhatsApp desde esta página. Un asesor del equipo dará seguimiento a tu solicitud; la asignación individual se confirma en nuestro CRM.",
   },
 ];
+
+/* ---------- Cupones ----------
+   amount: monto en MXN · product: texto que va en el mensaje de WhatsApp
+   from / to: vigencia opcional (YYYY-MM-DD, inclusive, hora de Ciudad de México). */
+const COUPONS = [
+  {
+    id: "premium",
+    title: "$200 para servicio + equipo",
+    description: "Descuento en el pago inicial de Plan Premium con equipo.",
+    amount: 200,
+    product: "Plan Premium con equipo",
+    image: "assets/cupon-premium-200.png",
+    active: true,
+    from: "",
+    to: "",
+  },
+  {
+    id: "servicio",
+    title: "$150 para solo servicio",
+    description: "Descuento en tu primer pago al contratar solo servicio.",
+    amount: 150,
+    product: "solo servicio",
+    image: "assets/cupon-servicio-150.png",
+    active: true,
+    from: "",
+    to: "",
+  },
+];
+
+/* ---------- Zonas de atención a domicilio ---------- */
+const COVERAGE_ZONES = [
+  "Puebla capital", "San Andrés Cholula", "San Pedro Cholula", "Cuautlancingo", "Amozoc", "Huejotzingo",
+  "Coronango", "Ocoyucan", "Atlixco", "San Martín Texmelucan", "San Miguel Xoxtla", "Juan C. Bonilla",
+  "Lomas de Angelópolis", "Angelópolis / Sonata", "Zavaleta / La Paz", "Centro Histórico", "Las Ánimas / Estrella de Puebla",
+];
+
+/* ---------- Ajustes y colores de marca (valores por defecto) ---------- */
+const SETTINGS_DEFAULT = { whatsapp: WHATSAPP_PRINCIPAL, ga4: "G-BTCKL6ENXP", metaPixel: "" };
+const THEME_DEFAULT = { azul: "#009fdb", morado: "#bf0cea", rosa: "#e72e70", naranja: "#ff8226", whatsapp: "#25d366" };
