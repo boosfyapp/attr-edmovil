@@ -3,6 +3,58 @@
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* ============================================================
+     Contenido administrable: published/content.js (panel /admin)
+     con respaldo a los datos del repo (data.js, catalog-data.js).
+     ============================================================ */
+  const SC = window.SITE_CONTENT || {};
+  const pickList = (value, fallback) => (Array.isArray(value) ? value : fallback);
+  const PREMIUM = pickList(SC.plans && SC.plans.premium, PLANS_PREMIUM);
+  const LITE = pickList(SC.plans && SC.plans.lite, PLANS_LITE);
+  const SIMPLE = pickList(SC.plans && SC.plans.simple, PLANS_SIMPLE);
+  const TEAM_LIST = pickList(SC.team, TEAM);
+  const STORE_LIST = pickList(SC.stores, STORES);
+  const DEVICE_LIST = pickList(SC.devices, DEVICE_CATALOG);
+  const FAQ_LIST = pickList(SC.faqs, FAQS);
+  const BUDGETS = pickList(SC.budgetRanges, BUDGET_RANGES);
+  const COUPON_LIST = pickList(SC.coupons, COUPONS);
+  const ZONE_LIST = pickList(SC.coverageZones, COVERAGE_ZONES);
+  const WA_MAIN = (SC.settings && SC.settings.whatsapp) || WHATSAPP_PRINCIPAL;
+
+  const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+  const fmtMoney = (n) => Number(n).toLocaleString("es-MX");
+  const fmtNum = (n) => String(Number(n));
+
+  /* Texto con **negritas**: se construye con nodos DOM (nunca innerHTML). */
+  function setRichText(el, value) {
+    const boldTag = (el.querySelector("b, strong") || { tagName: "STRONG" }).tagName.toLowerCase();
+    el.textContent = "";
+    String(value).split("**").forEach((part, index) => {
+      if (!part) return;
+      if (index % 2 === 1) {
+        const bold = document.createElement(boldTag);
+        bold.textContent = part;
+        el.append(bold);
+      } else {
+        el.append(document.createTextNode(part));
+      }
+    });
+  }
+
+  function applyTexts(texts) {
+    if (!texts) return;
+    document.querySelectorAll("[data-cms]").forEach((el) => {
+      const key = el.getAttribute("data-cms");
+      if (!Object.prototype.hasOwnProperty.call(texts, key)) return;
+      const value = texts[key];
+      if (typeof value !== "string" || !value.trim()) return;
+      const attr = el.getAttribute("data-cms-attr");
+      if (attr) el.setAttribute(attr, value);
+      else setRichText(el, value);
+    });
+  }
+  applyTexts(SC.texts);
+
   /* GA4: G-BTCKL6ENXP llegó en el formato final. Meta Pixel sigue sin ID. */
   window.dataLayer = window.dataLayer || [];
   function trackEvent(name, params) {
@@ -48,10 +100,8 @@
     const context = base.includes("Landing Barrio Cascatta") || base.includes("landing de AT&T Barrio Cascatta") ? "" : "\nOrigen: Landing Barrio Cascatta.";
     const choice = selectedProduct ? `\nInterés: ${selectedProduct}.` : "";
     const msg = encodeURIComponent(base + context + choice);
-    return `https://wa.me/${phone || WHATSAPP_PRINCIPAL}?text=${msg}`;
+    return `https://wa.me/${phone || WA_MAIN}?text=${msg}`;
   }
-
-  const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
 
   document.querySelectorAll("[data-wa-cta]").forEach((el) => {
     const modality = el.getAttribute("data-wa-modality") || "general";
@@ -185,13 +235,13 @@
      ============================================================ */
   function renderPremium() {
     const grid = document.getElementById("gridPremium");
-    grid.innerHTML = PLANS_PREMIUM.map(
+    grid.innerHTML = PREMIUM.map(
       (p) => `
       <div class="plan-card">
-        <span class="gb-pill">${p.gb} GB</span>
-        <div class="name">${p.name}</div>
-        <div class="price">$${p.price.toLocaleString("es-MX")}<small>/mes${p.hasAsterisk ? "*" : ""}</small></div>
-        ${p.note ? `<div class="note">${p.note}</div>` : ""}
+        <span class="gb-pill">${fmtNum(p.gb)} GB</span>
+        <div class="name">${escapeHtml(p.name)}</div>
+        <div class="price">$${fmtMoney(p.price)}<small>/mes${p.hasAsterisk ? "*" : ""}</small></div>
+        ${p.note ? `<div class="note">${escapeHtml(p.note)}</div>` : ""}
         <span class="portability-tag">20% desc. portabilidad · 6 meses</span>
       </div>`
     ).join("");
@@ -199,32 +249,32 @@
 
   function renderLite() {
     const grid = document.getElementById("gridLite");
-    grid.innerHTML = PLANS_LITE.map(
+    grid.innerHTML = LITE.map(
       (p) => `
       <div class="plan-card">
-        <span class="gb-pill">${p.gb} GB</span>
-        <div class="name">${p.name}</div>
-        <div class="price">$${p.price.toLocaleString("es-MX")}<small>/mes</small></div>
-        <div class="note">${p.socials} redes sociales ilimitadas a elegir</div>
-        <span class="portability-tag">${p.portability} desc. portabilidad · 6 meses</span>
+        <span class="gb-pill">${fmtNum(p.gb)} GB</span>
+        <div class="name">${escapeHtml(p.name)}</div>
+        <div class="price">$${fmtMoney(p.price)}<small>/mes</small></div>
+        <div class="note">${fmtNum(p.socials)} redes sociales ilimitadas a elegir</div>
+        <span class="portability-tag">${escapeHtml(p.portability)} desc. portabilidad · 6 meses</span>
       </div>`
     ).join("");
   }
 
   function renderSimple() {
     const grid = document.getElementById("gridSimple");
-    grid.innerHTML = PLANS_SIMPLE.map(
+    grid.innerHTML = SIMPLE.map(
       (p) => `
       <div class="plan-card">
-        <span class="gb-pill">${p.gbDouble} GB</span>
-        <div class="name">${p.name}</div>
-        <div class="price">$${p.price.toLocaleString("es-MX")}<small>/mes</small></div>
-        <div class="note">Doble de GB: de ${p.gbBase} a ${p.gbDouble} GB</div>
+        <span class="gb-pill">${fmtNum(p.gbDouble)} GB</span>
+        <div class="name">${escapeHtml(p.name)}</div>
+        <div class="price">$${fmtMoney(p.price)}<small>/mes</small></div>
+        <div class="note">Doble de GB: de ${fmtNum(p.gbBase)} a ${fmtNum(p.gbDouble)} GB</div>
         <div class="terms">
           ${p.terms
             .map(
               (t) =>
-                `<span><b>${t.months} meses</b> · pagas ${t.pay}, ${t.free} de regalo · total $${t.total.toLocaleString("es-MX")}</span>`
+                `<span><b>${fmtNum(t.months)} meses</b> · pagas ${fmtNum(t.pay)}, ${fmtNum(t.free)} de regalo · total $${fmtMoney(t.total)}</span>`
             )
             .join("")}
         </div>
@@ -250,7 +300,7 @@
   }
 
   const teamGrid = document.getElementById("teamGrid");
-  teamGrid.innerHTML = TEAM.map((m) => {
+  teamGrid.innerHTML = TEAM_LIST.map((m) => {
     const isManager = !!m.principal;
     return `
       <div class="team-card ${isManager ? "is-manager" : ""}">
@@ -265,18 +315,18 @@
      Render — Ubicaciones
      ============================================================ */
   const locGrid = document.getElementById("locGrid");
-  locGrid.innerHTML = STORES.map(
+  locGrid.innerHTML = STORE_LIST.map(
     (s) => `
     <div class="loc-card ${s.principal ? "is-principal" : ""}">
       <div class="loc-card-head">
         <span class="pin">${pinSvg}</span>
         ${s.principal ? '<span class="principal-badge">Sucursal principal</span>' : ""}
       </div>
-      <h3>${s.name}</h3>
-      <address>${s.address}</address>
-      <div class="hours">${s.hours}</div>
-      <a class="map-link" href="${s.map}" target="_blank" rel="noopener" data-store="${s.name}">${mapSvg} Cómo llegar</a>
-      <a class="store-coupon-link" href="${buildWaLink(`Hola, vengo de la Landing Barrio Cascatta. Quiero solicitar un cupón antes de acudir a ${s.name}. ¿Qué beneficio corresponde a mi contratación?`)}" target="_blank" rel="noopener" data-store="${s.name}">Solicitar cupón</a>
+      <h3>${escapeHtml(s.name)}</h3>
+      <address>${escapeHtml(s.address)}</address>
+      <div class="hours">${escapeHtml(s.hours)}</div>
+      <a class="map-link" href="${escapeHtml(s.map)}" target="_blank" rel="noopener" data-store="${escapeHtml(s.name)}">${mapSvg} Cómo llegar</a>
+      <a class="store-coupon-link" href="${escapeHtml(buildWaLink(`Hola, vengo de la Landing Barrio Cascatta. Quiero solicitar un cupón antes de acudir a ${s.name}. ¿Qué beneficio corresponde a mi contratación?`))}" target="_blank" rel="noopener" data-store="${escapeHtml(s.name)}">Solicitar cupón</a>
     </div>`
   ).join("");
   locGrid.querySelectorAll(".map-link").forEach((a) => {
@@ -290,24 +340,39 @@
       trackEvent("whatsapp_click", { store: selectedStore, modality: "cupon" });
     });
   });
-  document.querySelectorAll(".coupon-request").forEach((a) => {
-    const kind = a.dataset.coupon;
-    const amount = kind === "premium" ? 200 : 150;
-    const product = kind === "premium" ? "Plan Premium con equipo" : "solo servicio";
-    a.href = buildWaLink(`Hola, vengo de la Landing Barrio Cascatta. Solicito el cupón de $${amount} MXN para ${product}. Punto de venta: ${selectedStore || "por elegir"}.`);
-    a.target = "_blank";
-    a.rel = "noopener";
-    a.addEventListener("click", () => {
-      a.href = buildWaLink(`Hola, vengo de la Landing Barrio Cascatta. Solicito el cupón de $${amount} MXN para ${product}. Punto de venta: ${selectedStore || "por elegir"}.`);
-      trackEvent("coupon_request", { coupon: kind, store: selectedStore || "sin_elegir", source: "landing" });
-      trackEvent("whatsapp_click", { modality: "cupon", coupon: kind });
+
+  /* Cupones: solo los activos y vigentes hoy (hora de Ciudad de México). */
+  const todayMx = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Mexico_City" }).format(new Date());
+  const liveCoupons = COUPON_LIST.filter((c) => c.active !== false && (!c.from || c.from <= todayMx) && (!c.to || c.to >= todayMx));
+  const couponGrid = document.getElementById("couponGrid");
+  const couponSection = document.getElementById("cupones");
+  if (!liveCoupons.length) {
+    if (couponSection) couponSection.style.display = "none";
+  } else {
+    couponGrid.innerHTML = liveCoupons.map((c) => `
+      <article class="coupon-card"><img src="${escapeHtml(c.image)}" alt="${escapeHtml(`Cupón de $${c.amount} MXN: ${c.description}`)}" loading="lazy"><div><h3>${escapeHtml(c.title)}</h3><p>${escapeHtml(c.description)}</p><a class="btn btn-wa btn-sm coupon-request" href="#" data-coupon="${escapeHtml(c.id)}">Solicitar por WhatsApp</a></div></article>`).join("");
+    couponGrid.querySelectorAll(".coupon-request").forEach((a) => {
+      const coupon = liveCoupons.find((c) => c.id === a.dataset.coupon);
+      const message = () => `Hola, vengo de la Landing Barrio Cascatta. Solicito el cupón de $${coupon.amount} MXN para ${coupon.product}. Punto de venta: ${selectedStore || "por elegir"}.`;
+      a.href = buildWaLink(message());
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.addEventListener("click", () => {
+        a.href = buildWaLink(message());
+        trackEvent("coupon_request", { coupon: coupon.id, store: selectedStore || "sin_elegir", source: "landing" });
+        trackEvent("whatsapp_click", { modality: "cupon", coupon: coupon.id });
+      });
     });
-  });
+  }
+
+  /* Zonas de atención a domicilio */
+  const coverageList = document.getElementById("coverageList");
+  if (coverageList) coverageList.innerHTML = ZONE_LIST.map((z) => `<span>${escapeHtml(z)}</span>`).join("");
 
   /* Catálogo: reproducir todas las mensualidades proporcionadas en el XLSX. */
   const catalogGrid = document.getElementById("catalogGrid");
   const catalogBrand = document.getElementById("catalogBrand");
-  const pricedCatalog = DEVICE_CATALOG.filter((item) => !item.quoteOnly && Number.isFinite(item.monthly));
+  const pricedCatalog = DEVICE_LIST.filter((item) => !item.hidden && !item.quoteOnly && Number.isFinite(item.monthly));
   [...new Set(pricedCatalog.map((item) => item.brand))].sort().forEach((brand) => {
     const option = document.createElement("option");
     option.value = brand;
@@ -338,11 +403,11 @@
      Render — FAQ
      ============================================================ */
   const faqList = document.getElementById("faqList");
-  faqList.innerHTML = FAQS.map(
+  faqList.innerHTML = FAQ_LIST.map(
     (f) => `
     <div class="faq-item">
-      <button class="faq-q">${f.q}<span class="icon">${plusSvg}</span></button>
-      <div class="faq-a"><div class="faq-a-inner">${f.a}</div></div>
+      <button class="faq-q">${escapeHtml(f.q)}<span class="icon">${plusSvg}</span></button>
+      <div class="faq-a"><div class="faq-a-inner">${escapeHtml(f.a)}</div></div>
     </div>`
   ).join("");
   wireFaqAccordion(faqList);
@@ -392,8 +457,8 @@
   quoterBack.addEventListener("click", () => goToStep(Math.max(1, currentStep - 1)));
 
   const budgetOptionsEl = document.getElementById("quoterBudgetOptions");
-  budgetOptionsEl.innerHTML = BUDGET_RANGES.map(
-    (r) => `<button class="quoter-option" data-field="budget" data-id="${r.id}"><strong>${r.label}</strong><span>${r.tag}</span></button>`
+  budgetOptionsEl.innerHTML = BUDGETS.map(
+    (r) => `<button class="quoter-option" data-field="budget" data-id="${escapeHtml(r.id)}"><strong>${escapeHtml(r.label)}</strong><span>${escapeHtml(r.tag)}</span></button>`
   ).join("");
 
   quoterBox.addEventListener("click", (e) => {
@@ -405,7 +470,7 @@
     opt.classList.add("is-selected");
 
     if (field === "budget") {
-      const range = BUDGET_RANGES.find((r) => r.id === opt.getAttribute("data-id"));
+      const range = BUDGETS.find((r) => r.id === opt.getAttribute("data-id"));
       quoterState.budget = range;
       if (!quoterStarted) {
         trackEvent("cotizador_start", { source: "landing" });
@@ -428,9 +493,9 @@
   });
 
   const ALL_PLANS = [
-    ...PLANS_PREMIUM.map((p) => ({ ...p, cat: "Premium" })),
-    ...PLANS_LITE.map((p) => ({ ...p, cat: "Lite" })),
-    ...PLANS_SIMPLE.map((p) => ({ ...p, cat: "Simple", gb: p.gbDouble })),
+    ...PREMIUM.map((p) => ({ ...p, cat: "Premium" })),
+    ...LITE.map((p) => ({ ...p, cat: "Lite" })),
+    ...SIMPLE.map((p) => ({ ...p, cat: "Simple", gb: p.gbDouble })),
   ];
 
   function pickSpread(arr, n) {
@@ -459,9 +524,9 @@
         .map(
           (p) => `
         <div class="quoter-result-card">
-          <span class="cat">${p.cat}</span>
-          <strong>${p.name}</strong>
-          <span class="gb">$${p.price.toLocaleString("es-MX")}/mes · ${p.gb} GB</span>
+          <span class="cat">${escapeHtml(p.cat)}</span>
+          <strong>${escapeHtml(p.name)}</strong>
+          <span class="gb">$${fmtMoney(p.price)}/mes · ${fmtNum(p.gb)} GB</span>
         </div>`
         )
         .join("");

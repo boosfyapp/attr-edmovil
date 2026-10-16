@@ -8,6 +8,7 @@
   --att-blue: #009fdb;
   --att-blue-dark: #0080b3;
   --att-blue-light: #5fcdf2;
+  --att-blue-rgb: 0, 159, 219;
   --morado: #bf0cea;
   --rosa: #e72e70;
   --naranja: #ff8226;
@@ -15,6 +16,7 @@
   /* Acentos funcionales */
   --wa-green: #25d366;
   --wa-green-dark: #1da851;
+  --wa-green-rgb: 37, 211, 102;
 
   /* Categorías de plan */
   --cat-premium: var(--att-blue);
@@ -128,7 +130,7 @@ button {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--att-blue-dark);
-  background: rgba(0, 159, 219, 0.1);
+  background: rgba(var(--att-blue-rgb), 0.1);
   padding: 7px 16px;
   border-radius: var(--radius-full);
   margin-bottom: 18px;
@@ -257,7 +259,7 @@ section {
 }
 .btn-wa:hover {
   background: var(--wa-green-dark);
-  box-shadow: 0 14px 36px rgba(37, 211, 102, 0.45);
+  box-shadow: 0 14px 36px rgba(var(--wa-green-rgb), 0.45);
 }
 .btn-white {
   background: #fff;
@@ -559,7 +561,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 159, 219, 0.12);
+  background: rgba(var(--att-blue-rgb), 0.12);
   color: var(--att-blue-dark);
   margin-bottom: 4px;
 }
@@ -706,7 +708,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 159, 219, 0.1);
+  background: rgba(var(--att-blue-rgb), 0.1);
   color: var(--att-blue-dark);
 }
 .classify-card.is-priority .icon {
@@ -860,7 +862,7 @@ section {
 }
 .quoter-option.is-selected {
   border-color: var(--att-blue);
-  background: rgba(0, 159, 219, 0.06);
+  background: rgba(var(--att-blue-rgb), 0.06);
   box-shadow: var(--shadow-sm);
 }
 .quoter-option strong {
@@ -1005,7 +1007,7 @@ section {
   font-weight: 800;
   padding: 5px 13px;
   border-radius: var(--radius-full);
-  background: rgba(0, 159, 219, 0.1);
+  background: rgba(var(--att-blue-rgb), 0.1);
   color: var(--att-blue-dark);
 }
 .plan-panel[data-panel="lite"] .gb-pill { background: rgba(231, 46, 112, 0.1); color: var(--rosa); }
@@ -1334,7 +1336,7 @@ section {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: rgba(0, 159, 219, 0.12);
+  background: rgba(var(--att-blue-rgb), 0.12);
   color: var(--att-blue-dark);
   display: flex;
   align-items: center;
