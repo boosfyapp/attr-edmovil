@@ -15,6 +15,8 @@ describe("panel estático (/admin)", () => {
     const res = await fetch(`${app.base}/admin/`);
     assert.equal(res.status, 200);
     assert.match(res.headers.get("content-security-policy"), /script-src 'self'/);
+    assert.equal(res.headers.get("cache-control"), "no-store", "Cloudflare cachea .js/.css: el panel no debe cachearse");
+    assert.equal((await fetch(`${app.base}/admin/app.js`)).headers.get("cache-control"), "no-store");
     const html = await res.text();
     assert.match(html, /noindex/);
     for (const file of walk(path.join(REPO_ROOT, "admin"))) {

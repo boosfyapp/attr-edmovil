@@ -346,7 +346,23 @@
   const liveCoupons = COUPON_LIST.filter((c) => c.active !== false && (!c.from || c.from <= todayMx) && (!c.to || c.to >= todayMx));
   const couponGrid = document.getElementById("couponGrid");
   const couponSection = document.getElementById("cupones");
-  if (!liveCoupons.length) {
+  if (!couponGrid) {
+    /* HTML anterior en caché del navegador: tarjetas estáticas, se conserva su cableado original. */
+    document.querySelectorAll(".coupon-request").forEach((a) => {
+      const kind = a.dataset.coupon;
+      const amount = kind === "premium" ? 200 : 150;
+      const product = kind === "premium" ? "Plan Premium con equipo" : "solo servicio";
+      const message = () => `Hola, vengo de la Landing Barrio Cascatta. Solicito el cupón de $${amount} MXN para ${product}. Punto de venta: ${selectedStore || "por elegir"}.`;
+      a.href = buildWaLink(message());
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.addEventListener("click", () => {
+        a.href = buildWaLink(message());
+        trackEvent("coupon_request", { coupon: kind, store: selectedStore || "sin_elegir", source: "landing" });
+        trackEvent("whatsapp_click", { modality: "cupon", coupon: kind });
+      });
+    });
+  } else if (!liveCoupons.length) {
     if (couponSection) couponSection.style.display = "none";
   } else {
     couponGrid.innerHTML = liveCoupons.map((c) => `

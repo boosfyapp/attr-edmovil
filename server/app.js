@@ -56,7 +56,8 @@ async function handle(req, res, { config, auth, store, api }) {
   if (pathname === "/admin") return send(res, 301, "", { Location: "/admin/" });
   if (pathname.startsWith("/admin/")) {
     const rel = pathname === "/admin/" ? "index.html" : pathname.slice("/admin/".length);
-    if (serveStatic(res, config.adminDir, rel, { method, headers: { "Content-Security-Policy": ADMIN_CSP } })) return;
+    /* no-store: Cloudflare cachea .js/.css aunque el origen diga no-cache; el panel debe verse siempre al día. */
+    if (serveStatic(res, config.adminDir, rel, { method, headers: { "Content-Security-Policy": ADMIN_CSP, "Cache-Control": "no-store" } })) return;
     return sendText(res, 404, "No encontrado");
   }
 
