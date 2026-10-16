@@ -3,3 +3,6 @@
 deploy
 .claude
 .data
+docs
+test
+node_modules
