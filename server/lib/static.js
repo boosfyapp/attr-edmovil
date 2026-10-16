@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { MIME, send } from "./http.js";
+import { MIME, SECURITY_HEADERS, send } from "./http.js";
 
 const SITE_ROOT_FILES = /^(index\.html|styles\.css|script\.js|data\.js|catalog-data\.js|favicon\.png|logo-[a-z-]+\.png)$/;
 const SAFE_SEGMENT = /^[A-Za-z0-9_.@-]+$/;
@@ -36,7 +36,7 @@ function cacheHeader(ext, immutable) {
  * Sirve un archivo de baseDir. Devuelve true si respondió.
  * `allow(rel)` decide si la ruta relativa es servible.
  */
-export function serveStatic(res, baseDir, rawPath, { allow = () => true, immutable = false, method = "GET" } = {}) {
+export function serveStatic(res, baseDir, rawPath, { allow = () => true, immutable = false, method = "GET", headers: extra = {} } = {}) {
   const rel = cleanRelPath(rawPath);
   if (!rel || !allow(rel)) return false;
   const base = path.resolve(baseDir);
@@ -51,9 +51,11 @@ export function serveStatic(res, baseDir, rawPath, { allow = () => true, immutab
   if (!stat.isFile()) return false;
   const ext = path.extname(full).toLowerCase();
   const headers = {
+    ...SECURITY_HEADERS,
     "Content-Type": MIME[ext] || "application/octet-stream",
     "Content-Length": stat.size,
     "Cache-Control": cacheHeader(ext, immutable),
+    ...extra,
   };
   if (method === "HEAD") {
     send(res, 200, undefined, headers);
