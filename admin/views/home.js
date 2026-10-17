@@ -1,7 +1,9 @@
+import { api } from "../api.js";
 import { couponStatus } from "../lib/coupon-status.js";
 import { fmtDate, h } from "../ui.js";
 
-export function render(el, { store, go, publish }) {
+export async function render(el, { store, go, publish }) {
+  const agent = await api.agent().catch(() => null);
   const c = store.content;
   const live = c.coupons.filter((x) => couponStatus(x).key === "live").length;
   const planCount = c.plans.premium.length + c.plans.lite.length + c.plans.simple.length;
@@ -38,5 +40,11 @@ export function render(el, { store, go, publish }) {
       h("li", {}, h("strong", {}, "Publica."), " Con «Publicar» los cambios se ven al instante. Cada publicación queda en el Historial y puedes volver a una anterior."),
     ));
 
-  el.append(h("div", { class: "grid-2" }, statusCard, summary), how);
+  const agentCard = agent?.enabled && !agent.upToDate
+    ? h("section", { class: "panel" },
+      h("h2", {}, "Agente IA de WhatsApp"),
+      h("p", { class: "callout callout-warn" }, "Tu agente tiene información anterior a la que muestra hoy tu landing."),
+      h("div", { class: "row-actions" }, h("button", { class: "btn btn-primary", type: "button", onclick: () => go("agente") }, "Ir a Actualizar Agente IA")))
+    : null;
+  el.append(h("div", { class: "grid-2" }, statusCard, summary), agentCard, how);
 }

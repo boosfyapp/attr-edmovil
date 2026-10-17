@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { AgentSyncError, agentStatus, currentAgentPrompt, syncAgent } from "../lib/agent-sync.js";
 import { HttpError, parseCookies, readBody, readJson, sendJson } from "../lib/http.js";
 import { buildSeed } from "../lib/seed.js";
 import { ConflictError, NotFoundError, ValidationError } from "../lib/store.js";
@@ -109,6 +110,19 @@ export function createApi({ config, auth, store, limiter }) {
       if (pathname === "/api/uploads" && method === "POST") {
         const buffer = await readBody(req, MAX_UPLOAD_BYTES);
         return sendJson(res, 200, saveImage(config.dataDir, buffer)), true;
+      }
+      if (pathname === "/api/agent" && method === "GET") return sendJson(res, 200, agentStatus({ config, store })), true;
+      if (pathname === "/api/agent/prompt" && method === "GET") {
+        const current = currentAgentPrompt({ store, siteDir: config.siteDir });
+        return sendJson(res, 200, { prompt: current.prompt, landingVersion: current.landingVersion }), true;
+      }
+      if (pathname === "/api/agent/sync" && method === "POST") {
+        try {
+          return sendJson(res, 200, await syncAgent({ config, store })), true;
+        } catch (error) {
+          if (error instanceof AgentSyncError) throw new HttpError(error.status, error.message, { code: error.code });
+          throw error;
+        }
       }
       if (pathname === "/api/password" && method === "POST") {
         const body = await readJson(req, 10_000);

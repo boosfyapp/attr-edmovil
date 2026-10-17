@@ -1,7 +1,7 @@
 import { api, ApiError, setUnauthorizedHandler } from "./api.js";
 import { describePath } from "./lib/paths.js";
 import { store } from "./state.js";
-import { clear, field, h, modal, textInput, toast } from "./ui.js";
+import { clear, field, h, modal, textInput, toast, toggle } from "./ui.js";
 
 const ROUTES = [
   { id: "inicio", label: "Inicio", icon: "🏠", load: () => import("./views/home.js") },
@@ -12,6 +12,7 @@ const ROUTES = [
   { id: "equipo", label: "Equipo y tiendas", icon: "👥", load: () => import("./views/people-stores.js") },
   { id: "faq", label: "Preguntas y zonas", icon: "❓", load: () => import("./views/faq-zones.js") },
   { id: "apariencia", label: "Apariencia", icon: "🎨", load: () => import("./views/appearance.js") },
+  { id: "agente", label: "Agente IA", icon: "🤖", load: () => import("./views/agent.js") },
   { id: "ajustes", label: "Ajustes", icon: "⚙️", load: () => import("./views/settings.js") },
   { id: "historial", label: "Historial", icon: "🕘", load: () => import("./views/history.js") },
   { id: "vista-previa", label: "Vista previa", icon: "👁️", load: () => import("./views/preview.js") },
@@ -150,11 +151,18 @@ async function publishFlow() {
   await store.flush();
   if (store.status === "error" || store.status === "conflict") return toast("Primero resuelve el problema de guardado.", "error");
   const noteInput = textInput({ placeholder: "Ej. Subí precios de octubre", max: 200 });
+  const agent = await api.agent().catch(() => null);
+  let updateAgent = Boolean(agent?.enabled);
+  const agentRow = agent?.enabled
+    ? h("div", { class: "agent-option" }, toggle({ checked: true, onChange: (v) => { updateAgent = v; }, label: "Actualizar también el Agente IA de WhatsApp" }),
+      h("span", { class: "field-hint" }, "Así el agente contesta con los mismos precios y datos que acabas de publicar."))
+    : null;
   const choice = await modal({
     title: "Publicar cambios",
     body: h("div", {},
       h("p", {}, store.meta.dirty ? "Los cambios del borrador se verán de inmediato en la landing pública." : "No hay cambios nuevos respecto a lo publicado; se creará una versión igual."),
-      field("Nota (opcional)", noteInput, { hint: "Ayuda a reconocer esta versión en el historial." })),
+      field("Nota (opcional)", noteInput, { hint: "Ayuda a reconocer esta versión en el historial." }),
+      agentRow),
     actions: [{ label: "Cancelar", value: false }, { label: "Publicar ahora", value: true, kind: "primary" }],
   });
   if (!choice) return;
@@ -164,6 +172,14 @@ async function publishFlow() {
     refreshChrome();
     toast(`Publicado ✓ — versión ${result.version}`);
     if (result.warnings?.length) toast(`${result.warnings.length} aviso(s) revisables en Planes.`, "warn");
+    if (updateAgent) {
+      try {
+        await api.agentSync();
+        toast("Agente IA actualizado ✓");
+      } catch (agentError) {
+        toast(`La landing se publicó, pero el Agente IA no se actualizó: ${agentError.message}`, "error", 8000);
+      }
+    }
     route();
   } catch (error) {
     if (error instanceof ApiError && error.status === 422) return showPublishErrors(error.data.errors || []);

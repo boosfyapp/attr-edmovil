@@ -49,5 +49,8 @@ export const api = {
   version: (id) => request("GET", `/api/versions/${id}`),
   restore: (id) => request("POST", `/api/versions/${id}/restore`, { body: {} }),
   upload: (blob) => request("POST", "/api/uploads", { raw: blob, contentType: blob.type || "application/octet-stream" }),
+  agent: () => request("GET", "/api/agent"),
+  agentPrompt: () => request("GET", "/api/agent/prompt"),
+  agentSync: () => request("POST", "/api/agent/sync", { body: {} }),
   changePassword: (current, next) => request("POST", "/api/password", { body: { current, next } }),
 };

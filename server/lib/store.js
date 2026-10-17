@@ -167,6 +167,14 @@ export function createStore({ dataDir, siteDir }) {
       return describe(next);
     },
 
+    /** Contenido (documento) de la versión publicada, o null si todavía no se publicó nada. */
+    getPublishedContent() {
+      const meta = readMeta();
+      if (!meta) return null;
+      const version = readJson(path.join(f.versions, `${meta.version}.json`));
+      return version ? { version: meta.version, content: version.content } : null;
+    },
+
     /** Archivos publicados o null si todavía no se ha publicado nada. */
     getPublished() {
       const meta = readMeta();

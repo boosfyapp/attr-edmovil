@@ -12,5 +12,12 @@ export function loadConfig(env = process.env) {
     dataDir: path.resolve(env.DATA_DIR || (production ? "/data" : path.join(root, ".data"))),
     adminPassword: env.ADMIN_PASSWORD || "",
     insecureCookies: env.INSECURE_COOKIES === "1",
+    /** Sincronización del prompt con el agente de Boosfy (exportador). Todo o nada. */
+    agent: {
+      url: (env.BOOSFY_AGENT_URL || "").replace(/\/+$/, ""),
+      token: env.BOOSFY_AGENT_TOKEN || "",
+      flowId: Number.parseInt(env.BOOSFY_AGENT_FLOW_ID || "", 10) || 0,
+      production,
+    },
   };
 }
